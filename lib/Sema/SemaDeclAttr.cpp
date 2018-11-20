@@ -4632,6 +4632,16 @@ static void handleXRayLogArgsAttr(Sema &S, Decl *D, const ParsedAttr &AL) {
       AL.getAttributeSpellingListIndex()));
 }
 
+// Must be on a record or an enum, otherwise any is ok
+static void handlePyspotAttr(Sema &S, Decl *D, const ParsedAttr &AL) {
+  if (!isa<RecordDecl>(D) && !isa<EnumDecl>(D)) {
+      S.Diag(D->getLocation(), diag::warn_attribute_wrong_decl_type)
+         << "[[pyspot::export]] " << ExpectedFunctionVariableOrClass;
+      return;
+   }
+   handleSimpleAttribute<PyspotAttr>(S, D, AL);
+}
+
 //===----------------------------------------------------------------------===//
 // Checker-specific attribute handlers.
 //===----------------------------------------------------------------------===//
@@ -5981,6 +5991,9 @@ static void ProcessDeclAttribute(Sema &S, Scope *scope, Decl *D,
     }
     S.Diag(AL.getLoc(), diag::err_stmt_attribute_invalid_on_decl)
         << AL.getName() << D->getLocation();
+    break;
+  case ParsedAttr::AT_Pyspot:
+    handlePyspotAttr(S, D, AL);
     break;
   case ParsedAttr::AT_Interrupt:
     handleInterruptAttr(S, D, AL);

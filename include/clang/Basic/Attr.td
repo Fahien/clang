@@ -2971,3 +2971,10 @@ def InternalLinkage : InheritableAttr {
   let Subjects = SubjectList<[Var, Function, CXXRecord]>;
   let Documentation = [InternalLinkageDocs];
 }
+
+// Mark classes, structs, enums to generate python bindings
+def Pyspot : InheritableAttr {
+  let Spellings = [CXX11<"pyspot", "export">];
+  let Subjects = SubjectList<[Enum, Record, CXXRecord]>;
+  let Documentation = [PyspotDocs];
+}

@@ -1204,6 +1204,13 @@ void CodeGenModule::SetLLVMFunctionAttributesForDefinition(const Decl *D,
                                                            llvm::Function *F) {
   llvm::AttrBuilder B;
 
+  // Check for pyspot attribute on records
+  if (const RecordDecl* CD = dyn_cast_or_null<RecordDecl>(D)) {
+    if (CD->hasAttr<PyspotAttr>()) {
+      B.addAttribute(llvm::Attribute::Pyspot);
+    }
+  }
+
   if (CodeGenOpts.UnwindTables)
     B.addAttribute(llvm::Attribute::UWTable);
 

@@ -3458,3 +3458,12 @@ the resulting instructions with the call site, rather than with the
 corresponding line within the inlined callee.
   }];
 }
+
+def PyspotDocs : Documentation {
+  let Category = DocCatFunction;
+  let Heading = "Pyspot";
+  let Content = [{
+Clang supports the CXX11 style ``[[pyspot::export]]`` attribute on classes,
+structs, enums to generate python bindings.
+  }];
+}
